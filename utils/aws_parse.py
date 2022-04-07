@@ -20,14 +20,8 @@ class HttpCodes(enum.Enum):
 AUTHORIZATION_HEADER_NAME = "Authorization"
 
 def _decode_token_from_header(token: str) -> Dict:
-    result = {}
-    try:
-        decoded = encryption.JWTHandler(token=token).decode()
-        result = decoded
-    except Exception as e:
-        print(f"Could not decode token, {e}")
-    
-    return result
+    decoded = encryption.JWTHandler(token=token).decode()
+    return decoded
 
 def _inject_user_from_token(event: LambdaEvent) -> str:
     if AUTHORIZATION_HEADER_NAME in event.headers:
@@ -39,10 +33,13 @@ def _inject_user_from_token(event: LambdaEvent) -> str:
 
 def parse_lambda_event(func: Callable[[LambdaEvent, Any], Any]) -> Callable:
     def wrapper(*args, **kwargs):
-        event, context = args
-        parsed_event = LambdaEvent.parse_obj(event)
-        _inject_user_from_token(parsed_event)
-        return func(parsed_event, context)
+        try:
+            event, context = args
+            parsed_event = LambdaEvent.parse_obj(event)
+            _inject_user_from_token(parsed_event)
+            return func(parsed_event, context)
+        except Exception as e:
+            return get_response(HttpCodes.ERROR, {"message": str(e)})
     
     return wrapper
 
