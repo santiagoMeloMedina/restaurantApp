@@ -1,0 +1,215 @@
+{
+	"info": {
+		"_postman_id": "f7eb9dac-4233-44e5-a7f5-fb607faa8969",
+		"name": "RestaurantApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"fsdgsfdg@gmail.com\",\n    \"password\": \"!@#?]123aA\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"asdgfdgbf@gmail.com\",\n    \"password\": \"!@#?]123aA\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/register",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create restaurant",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZnNkZ3NmZGdAZ21haWwuY29tIiwiZXhwIjoxNjQ5MzA3NTUxfQ.DgvErvDeVZzrS1tVjdVGL2AeL7ncL2-8Vuxbvm8RoTM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"public\": false,\n    \"name\": \"Steaks\", \n    \"category\": \"Comida Tipica\", \n    \"rate\": 5, \n    \"schedule\": {\n        \"open\": \"10:00\",\n        \"close\": \"21:00\",\n        \"days\": [\n            \"MONDAY\",\n            \"TUESDAY\"\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/restaurant",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"restaurant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update restaurant",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZnNkZ3NmZGdAZ21haWwuY29tIiwiZXhwIjoxNjQ5MzA3NTUxfQ.DgvErvDeVZzrS1tVjdVGL2AeL7ncL2-8Vuxbvm8RoTM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"6a54e316-57e5-4e72-99d2-71a664640af9\",\n    \"category\": \"Comida Asiatica\",\n    \"public\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/restaurant",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"restaurant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get private restaurant",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYXNkZ2ZkZ2JmQGdtYWlsLmNvbSIsImV4cCI6MTY0OTMxMDAyM30.-Wz_UyeK3s0Ww1vcQFFj3FDaCJRBOV7jzsqNkglW4iY",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/restaurant/private",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"restaurant",
+						"private"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get public restaurant",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYXNkZ2ZkZ2JmQGdtYWlsLmNvbSIsImV4cCI6MTY0OTMxMDAyM30.-Wz_UyeK3s0Ww1vcQFFj3FDaCJRBOV7jzsqNkglW4iY",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/restaurant/0/10",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"restaurant",
+						"0",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get single restaurant",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZnNkZ3NmZGdAZ21haWwuY29tIiwiZXhwIjoxNjQ5MzExMjQ4fQ.RHVz_AavwUlsizyT6S4SJJc3NQ99yC80m8ydGrwaVfo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"6a54e316-57e5-4e72-99d2-71a664640af9\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/restaurant/get/single",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"restaurant",
+						"get",
+						"single"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
