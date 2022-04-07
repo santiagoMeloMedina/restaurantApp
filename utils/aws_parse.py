@@ -1,5 +1,5 @@
 
-from typing import Any, Callable, Dict, Union
+from typing import Any, Callable, Dict, Optional, Union
 import pydantic
 import enum
 import json
@@ -7,8 +7,9 @@ from utils import encryption
 
 
 class LambdaEvent(pydantic.BaseModel):
-    body: Dict[str, Any]
-    headers: Dict[str, Any]
+    body: Optional[Dict[str, Any]]
+    headers: Optional[Dict[str, Any]]
+    params: Optional[Dict[str, Any]]
 
 class HttpCodes(enum.Enum):
     SUCCESS = 200
