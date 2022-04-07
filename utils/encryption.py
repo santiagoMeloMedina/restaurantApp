@@ -36,6 +36,7 @@ class PasswordHandler:
 class JWTHandler:
 
     ALGORITHM = "HS256"
+    EXPIRE_TIME_IN_MINUTES = 20
 
     class Settings(pydantic.BaseSettings):
         token_secret_key: str
@@ -53,7 +54,7 @@ class JWTHandler:
             raise Exception("No secret key provided")
         
     def generate(self):
-        self.payload["exp"] = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(hours=1)
+        self.payload["exp"] = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=self.EXPIRE_TIME_IN_MINUTES)
         return jwt.encode(self.payload, self.__secret_key, algorithm=self.ALGORITHM)
     
     def decoce(self):
