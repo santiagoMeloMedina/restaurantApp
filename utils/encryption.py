@@ -57,5 +57,5 @@ class JWTHandler:
         self.payload["exp"] = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=self.EXPIRE_TIME_IN_MINUTES)
         return jwt.encode(self.payload, self.__secret_key, algorithm=self.ALGORITHM)
     
-    def decoce(self):
+    def decode(self):
         return jwt.decode(self.token, self.__secret_key, algorithms=self.ALGORITHM)

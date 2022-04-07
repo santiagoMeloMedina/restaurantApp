@@ -43,7 +43,7 @@ def login_user(*args, **kwargs) -> Dict:
     existing_user = USERS_REPOSITORY.get_user_by_email(user.email)
     if existing_user:
         if user.password == encryption.PasswordHandler(existing_user.get("password")).decrypt():
-            return {"accessToken": encryption.JWTHandler(payload={}).generate()}
+            return {"accessToken": encryption.JWTHandler(payload={"user": user.email}).generate()}
         else:
             raise Exception("Incorrect password")
     else:
