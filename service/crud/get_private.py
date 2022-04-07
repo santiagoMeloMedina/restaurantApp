@@ -1,4 +1,3 @@
-
 from typing import Any, Dict
 import uuid
 
@@ -6,6 +5,7 @@ import pydantic
 from utils import aws_parse
 from service.crud import model
 from service.crud import repository
+
 
 class Settings(pydantic.BaseSettings):
     restaurant_table_name: str
@@ -22,14 +22,20 @@ def handler(event: aws_parse.LambdaEvent, context: Any) -> Any:
         response = aws_parse.get_response(aws_parse.HttpCodes.SUCCESS, result)
     except Exception as e:
         print("Error registering user %s" % (e))
-        response = aws_parse.get_response(aws_parse.HttpCodes.ERROR, {"message": str(e)})
-    
+        response = aws_parse.get_response(
+            aws_parse.HttpCodes.ERROR, {"message": str(e)}
+        )
+
     return response
 
 
 def get_private(*args, **kwargs) -> Dict:
-    private_restaurants = RESTAURANT_REPOSITORY.scan_restaurants_by_user(kwargs.get("user", ""))
+    private_restaurants = RESTAURANT_REPOSITORY.scan_restaurants_by_user(
+        kwargs.get("user", "")
+    )
     if private_restaurants:
-        return {"restaurants": [restaurant.dict() for restaurant in private_restaurants]}
+        return {
+            "restaurants": [restaurant.dict() for restaurant in private_restaurants]
+        }
     else:
         raise Exception("You dont have any private restaurants")

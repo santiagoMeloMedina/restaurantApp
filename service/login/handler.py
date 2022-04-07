@@ -1,10 +1,10 @@
-
 from typing import Any, Dict
 
 import pydantic
 from utils import aws_parse, validation, encryption
 from service.registration import model
 from service.registration import repository
+
 
 class Settings(pydantic.BaseSettings):
     users_table_name: str
@@ -21,12 +21,18 @@ def handler(event: aws_parse.LambdaEvent, context: Any) -> Any:
             result = login_user(**event.body)
             response = aws_parse.get_response(aws_parse.HttpCodes.SUCCESS, result)
         else:
-            response = aws_parse.get_response(aws_parse.HttpCodes.BAD_REQUEST, {"message": "Missing required parameters"})
+            response = aws_parse.get_response(
+                aws_parse.HttpCodes.BAD_REQUEST,
+                {"message": "Missing required parameters"},
+            )
     except Exception as e:
         print("Error registering user %s" % (e))
-        response = aws_parse.get_response(aws_parse.HttpCodes.ERROR, {"message": str(e)})
-    
+        response = aws_parse.get_response(
+            aws_parse.HttpCodes.ERROR, {"message": str(e)}
+        )
+
     return response
+
 
 def _parse_user(email: str, password: str, **kwargs) -> model.User:
     if validation.is_email_valid(email):
@@ -36,14 +42,21 @@ def _parse_user(email: str, password: str, **kwargs) -> model.User:
             raise Exception("Not valid password")
     else:
         raise Exception("Not valid email")
-        
+
 
 def login_user(*args, **kwargs) -> Dict:
     user = _parse_user(**kwargs)
     existing_user = USERS_REPOSITORY.get_user_by_email(user.email)
     if existing_user:
-        if user.password == encryption.PasswordHandler(existing_user.get("password")).decrypt():
-            return {"accessToken": encryption.JWTHandler(payload={"user": user.email}).generate()}
+        if (
+            user.password
+            == encryption.PasswordHandler(existing_user.get("password")).decrypt()
+        ):
+            return {
+                "accessToken": encryption.JWTHandler(
+                    payload={"user": user.email}
+                ).generate()
+            }
         else:
             raise Exception("Incorrect password")
     else:

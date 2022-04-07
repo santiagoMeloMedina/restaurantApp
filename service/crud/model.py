@@ -1,11 +1,12 @@
-
 from typing import List
 import pydantic
 import enum
 
+
 class CommonModel(pydantic.BaseModel):
     owner: str
     public: bool
+
 
 class Days(enum.Enum):
     MONDAY = "MONDAY"
@@ -22,7 +23,7 @@ class Schedule(pydantic.BaseModel):
     close: str
     days: List[Days]
 
-    class Config: 
+    class Config:
         use_enum_values = True
 
 
@@ -32,4 +33,3 @@ class Restaurant(CommonModel):
     category: str
     schedule: Schedule
     rate: int
-

@@ -1,10 +1,10 @@
-
 from typing import Any, Dict
 
 import pydantic
 from utils import aws_parse, validation, encryption
 from service.registration import model
 from service.registration import repository
+
 
 class Settings(pydantic.BaseSettings):
     users_table_name: str
@@ -21,11 +21,16 @@ def handler(event: aws_parse.LambdaEvent, context: Any) -> Any:
             result = create_user(**event.body)
             response = aws_parse.get_response(aws_parse.HttpCodes.SUCCESS, result)
         else:
-            response = aws_parse.get_response(aws_parse.HttpCodes.BAD_REQUEST, {"message": "Missing required parameters"})
+            response = aws_parse.get_response(
+                aws_parse.HttpCodes.BAD_REQUEST,
+                {"message": "Missing required parameters"},
+            )
     except Exception as e:
         print("Error registering user %s" % (e))
-        response = aws_parse.get_response(aws_parse.HttpCodes.ERROR, {"message": str(e)})
-    
+        response = aws_parse.get_response(
+            aws_parse.HttpCodes.ERROR, {"message": str(e)}
+        )
+
     return response
 
 
@@ -39,6 +44,7 @@ def _parse_user(email: str, password: str, **kwargs) -> model.User:
     else:
         raise Exception("Not valid email")
 
+
 def create_user(*args, **kwargs) -> Dict:
     user = _parse_user(**kwargs)
     existing_user = USERS_REPOSITORY.get_user_by_email(user.email)
@@ -47,4 +53,3 @@ def create_user(*args, **kwargs) -> Dict:
         return {"user": user.email}
     else:
         raise Exception("Email has already been registered")
-    
