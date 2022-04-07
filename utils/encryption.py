@@ -1,16 +1,31 @@
 
 
-import rsa
+import base64
+import pydantic
+import binascii
+from cryptography.fernet import Fernet
 from configuration import aws_keys
 
 class PasswordHandler:
-    def __init__(self, pub_path: str, password: str) -> None:
-        self.param_handler = aws_keys.ParamsHandler()
+
+    class Settings(pydantic.BaseSettings):
+        password_secure_path: str
+        
+    def __init__(self, password: str) -> None:
         self.password = password
-        self.pub_path = pub_path
+        self.settings = self.Settings()
+        self.__set_params()
+    
+    def __set_params(self):
+        secret_key = aws_keys.ParamsHandler().get_secure_param(self.settings.password_secure_path)
+        self.__encryption_key: str = secret_key.get('Parameter', {}).get('Value', None)
+        if not self.__encryption_key:
+            raise Exception("No secret key provided")
 
     def encrypt(self):
-        return rsa.encrypt(self.password, self.param_handler.get_secure_param(self.pub_path))
+        fernet = Fernet(base64.urlsafe_b64encode(binascii.unhexlify(self.__encryption_key)))
+        return fernet.encrypt(self.password.encode())
     
     def decrypt(self):
-        return rsa.decrypt(self.password, )
+        fernet = Fernet(base64.urlsafe_b64encode(binascii.unhexlify(self.__encryption_key)))
+        return fernet.decrypt(self.password).decode()

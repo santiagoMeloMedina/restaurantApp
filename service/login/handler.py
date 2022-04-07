@@ -2,12 +2,13 @@
 from typing import Any, Dict
 
 import pydantic
-from utils import aws_parse, validation, encryption
+from utils import aws_parse, validation
 from service.registration import model
 from service.registration import repository
 
 class Settings(pydantic.BaseSettings):
     users_table_name: str
+    password_secure_path: str
 
 
 SETTINGS = Settings()
@@ -19,6 +20,7 @@ def handler(event: aws_parse.LambdaEvent, context: Any) -> Any:
     try:
         if event.body.get("email", None) and event.body.get("password", None):
             result = create_user(**event.body)
+            print(result)
             response = aws_parse.get_response(aws_parse.HttpCodes.SUCCESS, result)
         else:
             response = aws_parse.get_response(aws_parse.HttpCodes.BAD_REQUEST, {"message": "Missing required parameters"})
@@ -32,8 +34,7 @@ def handler(event: aws_parse.LambdaEvent, context: Any) -> Any:
 def _parse_user(email: str, password: str, **kwargs) -> model.User:
     if validation.is_email_valid(email):
         if validation.is_password_valid(password):
-            encrypted = encryption.PasswordHandler(password).encrypt()
-            return model.User(email=email, password=encrypted)
+            return model.User(email=email, password=password)
         else:
             raise Exception("Not valid password")
     else:
