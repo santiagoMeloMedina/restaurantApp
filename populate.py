@@ -1,16 +1,15 @@
-
 import boto3
 import os
 
 USERS_DATA = [
     {
         "email": "santiago1@gmail.com",
-        "password": "gAAAAABiT55WjkJU9brjMSiVZJlP9w15XDqDXuynFXeTWmT3awkQcaXaeHJMRZY9x54XvkzNxQxrC5KmwaFiDdL2DuKbG5EZsQ=="
+        "password": "gAAAAABiT55WjkJU9brjMSiVZJlP9w15XDqDXuynFXeTWmT3awkQcaXaeHJMRZY9x54XvkzNxQxrC5KmwaFiDdL2DuKbG5EZsQ==",
     },
     {
         "email": "santiago2@gmail.com",
-        "password": "gAAAAABiT56eUJd2VZarlmeYSfFwiFvvT4KWX25ZFtpAL33paHmoBC6xNS6HPktPA0DiH6u10G6C1yaZFzwGgNSK4Hdd--GD8g=="
-    }
+        "password": "gAAAAABiT56eUJd2VZarlmeYSfFwiFvvT4KWX25ZFtpAL33paHmoBC6xNS6HPktPA0DiH6u10G6C1yaZFzwGgNSK4Hdd--GD8g==",
+    },
 ]
 
 RESTAURANTS_DATA = [
@@ -21,14 +20,7 @@ RESTAURANTS_DATA = [
         "owner": "santiago2@gmail.com",
         "public": False,
         "rate": 5,
-        "schedule": {
-            "close": "21:00",
-            "days": [
-            "MONDAY",
-            "TUESDAY"
-            ],
-            "open": "10:00"
-        }
+        "schedule": {"close": "21:00", "days": ["MONDAY", "TUESDAY"], "open": "10:00"},
     },
     {
         "category": "Comida Asiatica",
@@ -37,13 +29,7 @@ RESTAURANTS_DATA = [
         "owner": "santiago2@gmail.com",
         "public": False,
         "rate": 5,
-        "schedule": {
-            "close": "21:00",
-            "days": [
-            "TUESDAY"
-            ],
-            "open": "10:00"
-        }
+        "schedule": {"close": "21:00", "days": ["TUESDAY"], "open": "10:00"},
     },
     {
         "category": "Comida Rapida",
@@ -52,14 +38,8 @@ RESTAURANTS_DATA = [
         "owner": "santiago1@gmail.com",
         "public": True,
         "rate": 5,
-        "schedule": {
-            "close": "21:00",
-            "days": [
-            "FRIDAY"
-            ],
-            "open": "15:00"
-        }
-    }
+        "schedule": {"close": "21:00", "days": ["FRIDAY"], "open": "15:00"},
+    },
 ]
 
 dynamodb_resource = boto3.resource("dynamodb")

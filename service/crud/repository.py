@@ -25,7 +25,9 @@ class RestaurantRepo:
         self, limit: int, offset: int
     ) -> List[model.Restaurant]:
         response = self.table.scan(FilterExpression=conditions.Attr("public").eq(True))
-        return [model.Restaurant.parse_obj(item) for item in response.get("Items")]
+        return [model.Restaurant.parse_obj(item) for item in response.get("Items")][
+            limit:offset
+        ]
 
     def put_restaurant(self, restaurant: model.Restaurant) -> Any:
         response = self.table.put_item(Item=restaurant.dict())
