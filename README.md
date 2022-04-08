@@ -19,6 +19,32 @@ The app uses `poetry` for its development environment, to configure it you need 
 Note: If the command `poetry` doesn't work, you can use `python3 -m poetry`.
 
 
+### Configure aws credentials
+To use aws resources, you need to configure your credentials with the aws cli. To install it here's the guide https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html.
+
+After installing the aws cli, set your credentials 
+- Access key ID
+- Access key Secret
+- Region (us-east-1/us-east-2...)
+
+with the following command 
+```
+    aws configure
+```
+
+To obtain you credentials, go into your AWS management console:
+1. Go to `IAM` service
+2. Go into `Access management` and then `Users`
+3. Select/Create a user
+4. On the `Permissions` tab
+    - Add permissions
+    - Attach existing policies directly
+    - You can use `AmazonSSMReadOnlyAccess` and `AmazonDynamoDBFullAccess` policies.
+    - Next until Add permissions
+5. On the `Security credentials` tab 
+    - Create access key
+    - Copy credentials and save them for `aws configure`
+
 
 ### Configuring tables and parameters
 To use the app locally, you still need to configure a DynamoDB table and some SystemManager secure parameters. To configure your tables you must go into your own AWS account's management console. Then go through the following steps. 
@@ -73,10 +99,6 @@ The variables you need to export to your local environment are as follow:
 - PASSWORD_SECURE_PATH=<password_encryption_key_parameter_name>
 - TOKEN_SECRET_KEY=<token_secret_key_parameter_name>
 
-For simplicity, you can set these values on the `.env` file located on the root folder of this project. Then run the following command:
-```
-    source .env
-```
 
 ### Running the app
 After configuring the resources and environmental variables, execute the following command on the root folder 
